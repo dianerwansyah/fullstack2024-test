@@ -17,7 +17,7 @@ func CreateClient(w http.ResponseWriter, r *http.Request) {
 	var c model.Client
 	_ = json.NewDecoder(r.Body).Decode(&c)
 
-	c.ClientLogo = utils.UploadToS3Mock(c.ClientLogo)
+	c.ClientLogo = utils.UploadToS3(c.ClientLogo)
 	c.CreatedAt = time.Now().Format(time.RFC3339)
 
 	query := `INSERT INTO my_client (name, slug, is_project, self_capture, client_prefix, client_logo, address, phone_number, city, created_at)
@@ -45,7 +45,7 @@ func UpdateClient(w http.ResponseWriter, r *http.Request) {
 	query := `UPDATE my_client SET name=$1, slug=$2, is_project=$3, self_capture=$4, client_prefix=$5, client_logo=$6,
 	          address=$7, phone_number=$8, city=$9, updated_at=$10 WHERE id=$11`
 	_, err := db.DB.Exec(query, c.Name, c.Slug, c.IsProject, c.SelfCapture, c.ClientPrefix,
-		utils.UploadToS3Mock(c.ClientLogo), c.Address, c.PhoneNumber, c.City, c.UpdatedAt, id)
+		utils.UploadToS3(c.ClientLogo), c.Address, c.PhoneNumber, c.City, c.UpdatedAt, id)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

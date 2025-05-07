@@ -10,7 +10,7 @@ import (
 var DB *sql.DB
 
 func InitDB() {
-	connStr := "user=my_client password=1234 dbname=fullstack2024 sslmode=disable"
+	connStr := "user=dian password=1234 dbname=my_client sslmode=disable"
 	var err error
 	DB, err = sql.Open("postgres", connStr)
 	if err != nil {
